@@ -5,6 +5,7 @@ import (
 	"io"
 	"log"
 	"net"
+	"strconv"
 	"time"
 )
 
@@ -53,4 +54,36 @@ func clock2() {
 		}
 		go handleConn(conn)
 	}
+}
+
+/*
+Exercise 8.1: Modify clock2 to accept a port number, and write a program, clockwall,
+that acts as a client of several clock servers at once,
+reading the times from each one and displaying the results in a table,
+akin to the wall of clocks seen in some business offices.
+If you have access to geographically distributed computers, run instances remotely;
+otherwise run local instances on different ports with fake time zones.
+*/
+
+func clockwall(port string) {
+	_, err := strconv.Atoi(port)
+	if err != nil {
+		log.Fatal(err)
+	}
+
+	listener, err := net.Listen("tcp", "localhost:"+port)
+	if err != nil {
+		log.Fatal(err)
+	}
+	fmt.Printf("Listening on port :%s\n", port)
+
+	for {
+		conn, err := listener.Accept()
+		if err != nil {
+			log.Print(err)
+			continue
+		}
+		go handleConn(conn)
+	}
+
 }
