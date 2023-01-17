@@ -7,5 +7,6 @@ import (
 var wg sync.WaitGroup
 
 func main() {
-	mutexUpdate(&wg)
+	// mutexUpdate(&wg)
+	calculateYearlyIncome()
 }
