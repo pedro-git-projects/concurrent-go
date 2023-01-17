@@ -23,3 +23,7 @@ LDFLAGS = "-w -s"
 challenges:
 	$(eval OBJ_NAME += challenges)
 	cd ./cmd/challenges; go build -ldflags $(LDFLAGS) -o $(OBJ_NAME); mv $(OBJ_NAME) ../../bin; 
+LDFLAGS = "-w -s"
+mutexes:
+	$(eval OBJ_NAME += mutexes)
+	cd ./cmd/mutexes; go build -ldflags $(LDFLAGS) -o $(OBJ_NAME); mv $(OBJ_NAME) ../../bin; 
