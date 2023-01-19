@@ -32,3 +32,15 @@ mutexes:
 producer:
 	$(eval OBJ_NAME += producer)
 	cd ./cmd/producer-consumer; go build -ldflags $(LDFLAGS) -o $(OBJ_NAME); mv $(OBJ_NAME) ../../bin; 
+
+chan:
+	$(eval OBJ_NAME += chan)
+	cd ./cmd/chan; go build -ldflags $(LDFLAGS) -o $(OBJ_NAME); mv $(OBJ_NAME) ../../bin; 
+
+goroutines:
+	$(eval OBJ_NAME += goroutines)
+	cd ./cmd/routines; go build -ldflags $(LDFLAGS) -o $(OBJ_NAME); mv $(OBJ_NAME) ../../bin; 
+
+performance:
+	$(eval OBJ_NAME += performance)
+	cd ./cmd/performance; go build -ldflags $(LDFLAGS) -o $(OBJ_NAME); mv $(OBJ_NAME) ../../bin; 
