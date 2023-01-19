@@ -6,6 +6,8 @@ import (
 
 func main() {
 	wg := &sync.WaitGroup{}
+	l := new(sync.Locker)
 	sleeping(10, wg)
-	commonIncrement()
+	mutexIncDec()
+	mutexRW(wg, *l)
 }

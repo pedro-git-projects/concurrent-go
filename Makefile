@@ -44,3 +44,7 @@ goroutines:
 performance:
 	$(eval OBJ_NAME += performance)
 	cd ./cmd/performance; go build -ldflags $(LDFLAGS) -o $(OBJ_NAME); mv $(OBJ_NAME) ../../bin; 
+
+dining:
+	$(eval OBJ_NAME += dining)
+	cd ./cmd/dining; go build -ldflags $(LDFLAGS) -o $(OBJ_NAME); mv $(OBJ_NAME) ../../bin; 
