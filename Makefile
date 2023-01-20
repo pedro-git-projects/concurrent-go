@@ -48,3 +48,7 @@ performance:
 dining:
 	$(eval OBJ_NAME += dining)
 	cd ./cmd/dining; go build -ldflags $(LDFLAGS) -o $(OBJ_NAME); mv $(OBJ_NAME) ../../bin; 
+
+barber:
+	$(eval OBJ_NAME += barber)
+	cd ./cmd/barber; go build -ldflags $(LDFLAGS) -o $(OBJ_NAME); mv $(OBJ_NAME) ../../bin; 
