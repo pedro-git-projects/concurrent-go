@@ -3,5 +3,6 @@ package main
 func main() {
 	welcome()
 	bs := NewBarberShop()
-	bs.AddBarber("Pedro")
+	bs.AddBarber("Douglas")
+	SleepingBarber(bs)
 }

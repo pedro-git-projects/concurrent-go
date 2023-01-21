@@ -1,3 +1,12 @@
 package main
 
-type Client string
+type Client struct {
+	Name string
+}
+
+func NewClient(name string) *Client {
+	c := &Client{
+		Name: name,
+	}
+	return c
+}

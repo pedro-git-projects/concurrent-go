@@ -32,39 +32,69 @@ func NewBarberShop() *BarberShop {
 }
 
 func (b *BarberShop) AddBarber(name string) {
-	brb := NewBarber(name)
+	barber := NewBarber(name)
 	b.NumberOfBarbers++
 
 	go func() {
-		color.Yellow("%s goes to the waiting room to check for clients.", brb.Name)
+		color.Yellow("%s goes to the waiting room to check for clients.", barber.Name)
 		for {
 			if len(b.ClientsChan) == 0 {
-				brb.Sleeping = true
-				color.Yellow("There is nothing to do so %s takes a nap.", brb.Name)
+				barber.Sleeping = true
+				color.Yellow("There is nothing to do so %s takes a nap.", barber.Name)
 			}
+
 			client, isOpen := <-b.ClientsChan
 
 			if isOpen {
-				if brb.Sleeping {
-					brb.Sleeping = false
-					color.Yellow("%s wakes %s up.", client, brb.Name)
-					b.CutHair(*brb, client)
-				} else {
-					b.BarberGoHome(*brb)
-					return
+				if barber.Sleeping {
+					barber.Sleeping = false
+					color.Yellow("%s wakes %s up.", client.Name, barber.Name)
 				}
+				b.CutHair(*barber, client)
+			} else {
+				b.BarberGoHome(*barber)
+				return
 			}
 		}
 	}()
 }
 
 func (b *BarberShop) CutHair(barber Barber, client Client) {
-	color.Green("%s is cutting %s's hair.", barber.Name, client)
+	color.Green("%s is cutting %s's hair.", barber.Name, client.Name)
 	time.Sleep(b.HairCutDuration)
-	color.Green("%s has finished cutting %s's hair.", barber, client)
+	color.Green("%s has finished cutting %s's hair.", barber.Name, client.Name)
 }
 
 func (b *BarberShop) BarberGoHome(barber Barber) {
-	color.Cyan("%s is going home", barber.Name)
+	color.Cyan("%s is going home.", barber.Name)
 	b.BarbersDoneChan <- true
+}
+
+func (b *BarberShop) CloseShop() {
+	color.Cyan("Closing shop for the day.")
+	close(b.ClientsChan)
+	b.Open = false
+
+	for a := 1; a <= b.NumberOfBarbers; a++ {
+		<-b.BarbersDoneChan
+	}
+	close(b.BarbersDoneChan)
+
+	color.Green("The barber shop is now closed for the day, and everyone has gone home.")
+	color.Green("---------------------------------------------------------------------")
+}
+
+func (b *BarberShop) addClient(client Client) {
+	color.Green("*** %s has arrived.", client.Name)
+
+	if b.Open {
+		select {
+		case b.ClientsChan <- client:
+			color.Yellow("%s seats in the waiting room.", client.Name)
+		default:
+			color.Red("The waiting room is full, so %s goes home.", client.Name)
+		}
+	} else {
+		color.Red("The shop is already closed, so %s goes home.", client.Name)
+	}
 }
